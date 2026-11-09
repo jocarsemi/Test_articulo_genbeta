@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Evaluativo: Universidad vs. Mercado Laboral en Informática</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0f6ff',
+                            100: '#e0edff',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            900: '#1e3a8a',
+                            dark: '#0f172a',
+                            card: '#1e293b'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);
+            min-height: 100vh;
+        }
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.75);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .option-card {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .option-card:hover {
+            transform: translateY(-2px);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.6);
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(99, 102, 241, 0.5);
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body class="text-slate-100 font-sans antialiased selection:bg-indigo-500 selection:text-white flex flex-col min-h-screen">
+
+    <!-- Header / Navbar -->
+    <header class="w-full border-b border-slate-800/80 glass-panel sticky top-0 z-50">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-500 to-blue-500 flex items-center justify-center shadow-lg shadow-indigo-500/30">
+                    <i class="fa-solid fa-graduation-cap text-white text-lg"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-lg leading-tight text-white">Evaluación Académico-Laboral</h1>
+                    <p class="text-xs text-slate-400">Genbeta: "Terminé informática y no sé programar"</p>
+                </div>
+            </div>
+            <div id="quiz-badge" class="hidden sm:flex items-center space-x-2 bg-slate-800/80 px-3 py-1.5 rounded-full border border-slate-700 text-xs text-slate-300">
+                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                <span>20 Preguntas Autocorregibles</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-grow max-w-4xl w-full mx-auto px-4 py-8 flex flex-col justify-center">
+
+        <!-- pantalla de bienvenida -->
+        <div id="start-screen" class="glass-panel rounded-2xl p-6 sm:p-10 shadow-2xl text-center border border-slate-700/50 my-auto">
+            <div class="inline-flex p-4 rounded-full bg-indigo-500/10 text-indigo-400 mb-6 border border-indigo-500/20">
+                <i class="fa-solid fa-[#laptop-code] text-4xl"></i>
+            </div>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-white mb-4">Cuestionario Evaluativo: Brecha Universidad vs. Industria</h2>
+            <p class="text-slate-300 text-sm sm:text-base max-w-2xl mx-auto mb-8 leading-relaxed">
+                Este test explora el dilema actual planteado por graduados de Ingeniería Informática sobre la formación académica frente a las demandas reales del mercado laboral moderno (frameworks, metodologías, bases teóricas y síndrome del impostor).
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8 text-left">
+                <div class="bg-slate-800/50 p-4 rounded-xl border border-slate-700/40">
+                    <div class="text-indigo-400 font-bold mb-1 flex items-center gap-2">
+                        <i class="fa-solid fa-list-check"></i> 20 Preguntas
+                    </div>
+                    <p class="text-xs text-slate-400">Preguntas objetivas de 3 opciones (A, B, C) con respuestas equilibradas.</p>
+                </div>
+                <div class="bg-slate-800/50 p-4 rounded-xl border border-slate-700/40">
+                    <div class="text-indigo-400 font-bold mb-1 flex items-center gap-2">
+                        <i class="fa-solid fa-shuffle"></i> Orden Aleatorio
+                    </div>
+                    <p class="text-xs text-slate-400">Tanto las preguntas como las alternativas se barajan automáticamente.</p>
+                </div>
+                <div class="bg-slate-800/50 p-4 rounded-xl border border-slate-700/40">
+                    <div class="text-indigo-400 font-bold mb-1 flex items-center gap-2">
+                        <i class="fa-solid fa-award"></i> Corrección Instantánea
+                    </div>
+                    <p class="text-xs text-slate-400">Genera una ficha de revisión completa para validación docente.</p>
+                </div>
+            </div>
+
+            <!-- Datos del Estudiante opcionales -->
+            <div class="mb-8 max-w-md mx-auto text-left">
+                <label for="student-name" class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Nombre completo del Alumno / Alumna:</label>
+                <input type="text" id="student-name" placeholder="Ej. María García López" class="w-full bg-slate-900/80 border border-slate-700 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm">
+            </div>
+
+            <button onclick="startQuiz()" class="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-500 hover:to-blue-500 text-white font-bold rounded-xl shadow-lg shadow-indigo-600/30 hover:shadow-indigo-500/50 transition duration-200 transform hover:-translate-y-0.5 active:translate-y-0">
+                <i class="fa-solid fa-play mr-2"></i> Comenzar Evaluación
+            </button>
+        </div>
+
+        <!-- PANTALLA DEL QUIZ -->
+        <div id="quiz-screen" class="hidden space-y-6">
+            
+            <!-- Barra de Estado y Progreso -->
+            <div class="glass-panel p-4 rounded-2xl border border-slate-700/50">
+                <div class="flex justify-between items-center mb-2 text-xs sm:text-sm font-semibold">
+                    <span id="progress-text" class="text-indigo-400">Pregunta 1 de 20</span>
+                    <span id="answered-count" class="text-slate-400">Respondiendo: 0/20</span>
+                </div>
+                <div class="w-full bg-slate-800 h-2.5 rounded-full overflow-hidden p-0.5 border border-slate-700/50">
+                    <div id="progress-bar" class="bg-gradient-to-r from-indigo-500 to-blue-500 h-full rounded-full transition-all duration-300 w-0"></div>
+                </div>
+            </div>
+
+            <!-- Contenedor de Preguntas -->
+            <div id="questions-container" class="space-y-6">
+                <!-- Se inyectan dinámicamente con JS -->
+            </div>
+
+            <!-- Botón para finalizar -->
+            <div class="glass-panel p-6 rounded-2xl border border-slate-700/50 flex flex-col sm:flex-row justify-between items-center gap-4">
+                <div class="text-xs text-slate-400 text-center sm:text-left">
+                    <i class="fa-solid fa-circle-info text-indigo-400 mr-1"></i> Asegúrate de responder todas las preguntas antes de entregar.
+                </div>
+                <button onclick="submitQuiz()" class="w-full sm:w-auto px-8 py-3.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl shadow-lg shadow-emerald-600/30 hover:shadow-emerald-500/50 transition duration-200 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-paper-plane"></i> Finalizar y Corregir
+                </button>
+            </div>
+        </div>
+
+        <!-- PANTALLA DE RESULTADOS (TARJETA PARA EL PROFESOR) -->
+        <div id="results-screen" class="hidden space-y-8 my-auto">
+            
+            <!-- Tarjeta Oficial de Calificación -->
+            <div class="glass-panel rounded-3xl p-6 sm:p-10 border border-slate-700/60 shadow-2xl relative overflow-hidden">
+                <div class="absolute top-0 right-0 transform translate-x-6 -translate-y-6 w-32 h-32 bg-indigo-500/10 rounded-full blur-2xl pointer-events-none"></div>
+
+                <!-- Cabecera del Reporte -->
+                <div class="border-b border-slate-700/80 pb-6 mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <div>
+                        <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 mb-2">
+                            Ficha de Evaluación Docente
+                        </span>
+                        <h2 class="text-2xl font-bold text-white" id="res-student-name">Alumno: No especificado</h2>
+                        <p class="text-xs text-slate-400 mt-1" id="res-date">Fecha de realización: --/--/----</p>
+                    </div>
+                    <div id="grade-badge" class="px-6 py-3 rounded-2xl text-center border font-bold text-xl sm:text-2xl min-w-[140px]">
+                        <!-- Calificación JS -->
+                    </div>
+                </div>
+
+                <!-- Resumen de Métricas -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+                    <div class="bg-slate-900/60 p-4 rounded-2xl border border-slate-800 text-center">
+                        <span class="block text-xs text-slate-400 mb-1">Nota Final (Sobre 10)</span>
+                        <span id="score-decimal" class="text-3xl font-extrabold text-white">0.0</span>
+                    </div>
+                    <div class="bg-slate-900/60 p-4 rounded-2xl border border-slate-800 text-center">
+                        <span class="block text-xs text-slate-400 mb-1">Aciertos Totales</span>
+                        <span id="score-fraction" class="text-3xl font-extrabold text-indigo-400">0 / 20</span>
+                    </div>
+                    <div class="bg-slate-900/60 p-4 rounded-2xl border border-slate-800 text-center">
+                        <span class="block text-xs text-slate-400 mb-1">Porcentaje de Eficiencia</span>
+                        <span id="score-percentage" class="text-3xl font-extrabold text-emerald-400">0%</span>
+                    </div>
+                </div>
+
+                <!-- Comentario docente automático -->
+                <div id="teacher-feedback" class="p-4 rounded-xl bg-slate-800/80 border border-slate-700 text-sm text-slate-300 mb-8">
+                    <!-- Mensaje JS -->
+                </div>
+
+                <!-- Botones de Acción -->
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <button onclick="toggleReview()" class="flex-1 py-3.5 bg-slate-800 hover:bg-slate-700 border border-slate-600 text-white font-semibold rounded-xl transition flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-eye"></i> <span id="toggle-review-text">Ver Desglose de Respuestas</span>
+                    </button>
+                    <button onclick="restartQuiz()" class="flex-1 py-3.5 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold rounded-xl shadow-lg shadow-indigo-600/30 transition flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-rotate-right"></i> Reiniciar Test
+                    </button>
+                </div>
+            </div>
+
+            <!-- Desglose detallado de revisión (Oculto por defecto) -->
+            <div id="review-container" class="hidden glass-panel rounded-3xl p-6 sm:p-8 border border-slate-700/60 space-y-6">
+                <h3 class="text-xl font-bold text-white flex items-center gap-2 border-b border-slate-700 pb-4">
+                    <i class="fa-solid fa-clipboard-check text-indigo-400"></i> Desglose Pregunta por Pregunta
+                </h3>
+                <div id="review-list" class="space-y-6">
+                    <!-- Inyectado por JS -->
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="w-full border-t border-slate-800/80 glass-panel py-4 mt-auto">
+        <div class="max-w-5xl mx-auto px-4 text-center text-xs text-slate-500">
+            Cuestionario autocorregible para entornos académicos | Basado en el debate técnico sobre el currículo de Ingeniería Informática.
+        </div>
+    </footer>
+
+    <!-- LOGICA JAVASCRIPT -->
+    <script>
+        // Banco de 20 preguntas basadas en el artículo de Genbeta
+        const rawQuestions = [
+            {
+                question: "¿Cuál es la queja principal de muchos recién graduados en Ingeniería Informática respecto a la programación?",
+                options: [
+                    "Consideran que la carrera se enfoca excesivamente en la teoría sin enseñar frameworks de uso actual en las empresas.",
+                    "Reclaman que no se cursan asignaturas de matemáticas avanzadas ni lógica de sistemas de bajo nivel.",
+                    "Se quejan de que las universidades obligan a aprender demasiados lenguajes de programación modernos a la vez."
+                ],
+                correct: 0,
+                explanation: "La crítica central expuesta en el artículo es que la universidad prioriza las bases teóricas y matemáticas pero dedica poco tiempo al ecosistema de frameworks y herramientas prácticas que exige el mercado laboral."
+            },
+            {
+                question: "¿Por qué la universidad prioriza enseñar fundamentos teóricos en lugar de tecnologías o frameworks de moda?",
+                options: [
+                    "Porque las tecnologías y frameworks cambian rápidamente, mientras que los fundamentos teóricos perduran a lo largo de los años.",
+                    "Porque las universidades carecen de licencias de software comercial para enseñar programación web o móvil.",
+                    "Porque la normativa educativa europea prohíbe explícitamente impartir lenguajes de programación en el ámbito universitario."
+                ],
+                correct: 0,
+                explanation: "El objetivo de un grado universitario es brindar bases duraderas (estructuras de datos, arquitectura, algoritmos) que permitan al graduado adaptarse a cualquier tecnología a lo largo de su carrera."
+            },
+            {
+                question: "Al incorporarse a su primer empleo tecnológico, ¿con qué dificultad real suelen tropezar los egresados?",
+                options: [
+                    "Enfrentarse a bases de código gigantes en producción, control de versiones (Git) y dinámicas de trabajo en equipo.",
+                    "Falta de solidez al realizar demostraciones matemáticas puras de algoritmos en su labor cotidiana.",
+                    "Desconocimiento total de la sintaxis básica de bucles y condicionales en lenguajes como C o Java."
+                ],
+                correct: 0,
+                explanation: "En la empresa no se crea software aislado desde cero como en las prácticas universitarias; se trabaja en proyectos legados masivos con Git, metodologías ágiles y revisión de código."
+            },
+            {
+                question: "¿Qué fenómeno psicológico experimentan habitualmente los titulados al ver ofertas laborales exigiendo múltiples frameworks?",
+                options: [
+                    "El síndrome del impostor, sintiendo que su título universitario no les ha preparado realmente para el trabajo.",
+                    "El efecto Dunning-Kruger, creyendo que dominan la ingeniería de software mejor que los programadores sénior.",
+                    "El sesgo de confirmación académico, asumiendo que las ofertas de empleo solicitan requisitos irrelevantes."
+                ],
+                correct: 0,
+                explanation: "Al enfrentarse a ofertas laborales repletas de requisitos técnicos modernos (React, Docker, Cloud), los recién graduados suelen dudar profundamente de su capacidad profesional."
+            },
+            {
+                question: "¿Qué diferencia principal existe entre un bootcamp intensivo de desarrollo y la Grado en Ingeniería Informática?",
+                options: [
+                    "El bootcamp se enfoca en competencias operativas rápidas y tecnologías actuales; la carrera brinda una visión integral del cómputo.",
+                    "El grado universitario enseña exclusivamente diseño gráfico, mientras que el bootcamp enseña redes y sistemas operativos.",
+                    "Los bootcamps otorgan títulos oficiales homologados con validez internacional para investigación científica."
+                ],
+                correct: 0,
+                explanation: "Los bootcamps preparan perfiles orientados al desarrollo inmediato con tecnologías de alta demanda, mientras que el grado forma ingenieros con bases teóricas amplias de computación."
+            },
+            {
+                question: "¿Por qué herramientas como Git o metodologías como Scrum apenas se profundizan en algunos planes de estudio?",
+                options: [
+                    "Porque el ritmo de actualización del currículo universitario suele ser más lento que la velocidad de cambio de la industria.",
+                    "Porque la industria del software considera que el control de versiones y las metodologías agiles son prácticas obsoletas.",
+                    "Porque los profesores universitarios tienen prohibido por ley utilizar herramientas de software libre en las aulas."
+                ],
+                correct: 0,
+                explanation: "La burocracia académica y el proceso de acreditación de planes de estudio hacen que actualizar las asignaturas tome años, quedando desfasadas respecto a la industria."
+            },
+            {
+                question: "¿Qué ventaja competitiva demuestra a largo plazo un graduado con sólidos conocimientos teóricos?",
+                options: [
+                    "Una mayor facilidad para comprender la arquitectura interna de sistemas, optimización y adaptarse a nuevos paradigmas.",
+                    "La capacidad innata para escribir código sin necesidad de probarlo ni realizar depuración de errores.",
+                    "La garantía absoluta de conseguir un puesto directivo de forma automática inmediatamente tras graduarse."
+                ],
+                correct: 0,
+                explanation: "Quien domina los fundamentos teóricos comprende el 'por qué' de las cosas, facilitando el aprendizaje rápido de nuevos lenguajes y la resolución de problemas complejos."
+            },
+            {
+                question: "Ante la frase 'en la carrera no me enseñaron a programar', ¿cuál es la postura de muchos profesores e ingenieros experimentados?",
+                options: [
+                    "Que la universidad enseña a pensar y aprender a aprender; el lenguaje o framework específico se aprende practicando.",
+                    "Que la crítica es 100% acertada y la solución pasa por eliminar todas las asignaturas de matemáticas y física.",
+                    "Que los estudiantes deberían aprender exclusivamente a programar sin recibir formación en ingeniería o diseño."
+                ],
+                correct: 0,
+                explanation: "Los docentes destacan que la informática es una ciencia de la computación, no una academia de formación profesional orientada a una herramienta concreta."
+            },
+            {
+                question: "¿Qué rol juega el aprendizaje autodidacta durante la etapa universitaria en las carreras STEM?",
+                options: [
+                    "Es un complemento imprescindible para construir proyectos personales y cerrar la brecha con las demandas del mercado.",
+                    "Es una práctica desaconsejada porque distrae al alumno de la memorización de los apuntes del profesorado.",
+                    "Es obligatorio únicamente para los estudiantes que decidan dedicarse a la docencia universitaria."
+                ],
+                correct: 0,
+                explanation: "Crear proyectos propios fuera de clase es la mejor manera de aplicar la teoría académica en tecnologías reales solicitadas por las empresas."
+            },
+            {
+                question: "¿Qué aspecto del desarrollo de software profesional resulta casi imposible de replicar en prácticas universitarias individuales?",
+                options: [
+                    "La colaboración a gran escala, la gestión de deuda técnica y el mantenimiento de código escrito por otras personas.",
+                    "La sintaxis básica de las estructuras condicionales (if/else) y los bucles de iteración (for/while).",
+                    "El uso de compiladores y entornos de desarrollo integrados (IDE) para la corrección de errores sintácticos."
+                ],
+                correct: 0,
+                explanation: "En la facultad los proyectos se inician desde cero y duran pocos meses. En el entorno laboral se trabaja sobre código ajeno con años de antigüedad y restricciones reales."
+            },
+            {
+                question: "¿Cuál es una de las recomendaciones más habituales para los estudiantes universitarios de últimos cursos?",
+                options: [
+                    "Construir un portafolio en GitHub con proyectos personales utilizando tecnologías demandadas por el sector.",
+                    "Memorizar el manual completo de sintaxis de lenguajes antiguos para utilizarlos en entrevistas técnicas.",
+                    "Evitar realizar prácticas en empresas hasta acumular al menos 5 años de experiencia teórica posterior a la graduación."
+                ],
+                correct: 0,
+                explanation: "Tener repositorios públicos con código limpio demuestra iniciativa, capacidad de aprendizaje autónomo y dominio de herramientas profesionales."
+            },
+            {
+                question: "¿Por qué existe un contraste entre lo que piden las ofertas de empleo 'Junior' y lo que sabe un recién titulado?",
+                options: [
+                    "Porque las empresas a menudo solicitan perfiles 'Junior' exigiendo requisitos técnicos avanzados propios de profesionales 'Sénior'.",
+                    "Porque las universidades han dejado de impartir asignaturas de programación en todas sus especialidades.",
+                    "Porque los graduados universitarios rechazan aprender tecnologías modernas por iniciativa propia durante la carrera."
+                ],
+                correct: 0,
+                explanation: "Existe una distorsión en el mercado laboral donde los anuncios para puestos iniciales exigen experiencia previa en decenas de frameworks y herramientas específicas."
+            },
+            {
+                question: "¿Qué importancia tienen asignaturas como Estructuras de Datos y Algoritmos en las entrevistas técnicas de grandes empresas?",
+                options: [
+                    "Son fundamentales, ya que las pruebas de selección suelen evaluar la resolución de problemas lógicos y eficiencia computacional.",
+                    "Ninguna, ya que las grandes empresas únicamente evalúan el diseño visual de páginas web creadas con librerías modernas.",
+                    "Tienen un valor secundario, utilizándose solo para desempatar a candidatos en puestos de administración de redes."
+                ],
+                correct: 0,
+                explanation: "Compañías de primer nivel evalúan precisamente las bases algorítmicas y la complejidad computacional que se enseñan en el grado universitario."
+            },
+            {
+                question: "¿Qué significa el concepto 'aprender a aprender' dentro del contexto de la ingeniería de software?",
+                options: [
+                    "Desarrollar la capacidad mental de asimilar nuevas tecnologías, lenguajes y paradigmas de forma autónoma a lo largo del tiempo.",
+                    "Memorizar libros de texto teóricos para poder aprobar los exámenes finales sin necesidad de realizar código práctico.",
+                    "Aprender a buscar respuestas en foros de internet sin comprender el funcionamiento interno de las soluciones aplicadas."
+                ],
+                correct: 0,
+                explanation: "Dado que las herramientas informáticas cambian constantemente, la habilidad más valiosa de un ingeniero es su capacidad para autoenseñarse cualquier tecnología."
+            },
+            {
+                question: "¿Cuál es un error habitual de los estudiantes que confunden 'saber programar' con 'conocer un framework'?",
+                options: [
+                    "Creer que dominar una librería concreta (ej. React) equivale a comprender la arquitectura de software y el razonamiento lógico.",
+                    "Asumir que para aprender un framework moderno es imprescindible escribir código exclusivamente en ensamblador.",
+                    "Pensar que los frameworks de desarrollo no requieren ningún tipo de lógica de programación para ser utilizados."
+                ],
+                correct: 0,
+                explanation: "Un framework es una herramienta. Quien solo conoce el framework sufre cuando la tecnología cambia; quien sabe programar adapta sus conocimientos a cualquier herramienta."
+            },
+            {
+                question: "¿Qué papel desempeñan las prácticas en empresa (convenios universidad-empresa) durante la formación universitaria?",
+                options: [
+                    "Permiten al alumno experimentar el entorno profesional real, cerrando la brecha entre la teoría y la práctica antes de graduarse.",
+                    "Son un requisito puramente burocrático que no aporta ningún valor al currículum vitae ni a la formación del estudiante.",
+                    "Sustituyen por completo la necesidad de cursar asignaturas teóricas de matemáticas y lógica en la universidad."
+                ],
+                correct: 0,
+                explanation: "Las prácticas empresariales son el puente ideal para que el estudiante aplique sus bases teóricas en proyectos reales con equipos multidisciplinares."
+            },
+            {
+                question: "En la discusión sobre la formación en informática, ¿qué se entiende por 'deuda técnica'?",
+                options: [
+                    "Las deficiencias en el diseño o código de un sistema acumuladas por priorizar entregas rápidas en lugar de soluciones sólidas.",
+                    "El importe económico que los estudiantes deben pagar a la universidad por el uso de laboratorios de computación.",
+                    "El retraso lectivo que sufren las universidades al no actualizar sus planes de estudio cada semestre."
+                ],
+                correct: 0,
+                explanation: "La deuda técnica es un concepto clave en la industria del software profesional que raras veces se experimenta en proyectos académicos pequeños."
+            },
+            {
+                question: "¿Por qué el trabajo en equipo en la industria difiere sustancialmente de los trabajos en grupo universitarios?",
+                options: [
+                    "Porque implica coordinación continua con Git, CI/CD, metodologías ágiles, revisiones de código (Pull Requests) y comunicación interdepartamental.",
+                    "Porque en la industria cada programador trabaja en aislamiento total sin comunicarse con sus compañeros de equipo.",
+                    "Porque en la universidad los trabajos en grupo están prohibidos en las asignaturas de desarrollo de software."
+                ],
+                correct: 0,
+                explanation: "El trabajo profesional requiere un nivel de coordinación, integración continua y comunicación multidisciplinar infinitamente superior al académico."
+            },
+            {
+                question: "¿Cuál es la conclusión equilibrada entre la formación teórica universitaria y la preparación laboral práctica?",
+                options: [
+                    "Ambas son necesarias: la universidad otorga la estructura mental y fundamentos sólidos; la práctica personal o laboral otorga la agilidad técnica.",
+                    "La formación universitaria debería eliminarse por completo y sustituirse por cursos intensivos de 3 meses.",
+                    "La práctica profesional es innecesaria si el estudiante obtiene sobresaliente en las asignaturas teóricas de la carrera."
+                ],
+                correct: 0,
+                explanation: "La visión más razonable defiende la complementariedad: la base académica dota de versatilidad a largo plazo y la práctica capacita para la productividad inmediata."
+            },
+            {
+                question: "Si un recién graduado siente que 'no sabe nada de programar', ¿cuál es la actitud profesional recomendada para iniciar su carrera?",
+                options: [
+                    "Asumir que es una etapa normal de transición, mantener la humildad para aprender de perfiles sénior y practicar con proyectos reales.",
+                    "Abandonar el sector tecnológico e iniciar estudios en áreas no relacionadas con la ingeniería ni la computación.",
+                    "Exigir a las empresas puestos de alta dirección para evitar realizar tareas de programación en su día a día."
+                ],
+                correct: 0,
+                explanation: "Es una fase habitual al inicio de la carrera profesional. Aceptar la curva de aprendizaje inicial e invertir tiempo en práctica continua es el camino para consolidarse."
+            }
+        ];
+
+        // Estado del test
+        let processedQuestions = [];
+        let userAnswers = {};
+
+        // Función para barajar un array (Fisher-Yates Shuffle)
+        function shuffleArray(array) {
+            const arr = [...array];
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
+        }
+
+        // Iniciar el Test
+        function startQuiz() {
+            const nameInput = document.getElementById('student-name').value.trim();
+            
+            // Ocultar inicio, mostrar test
+            document.getElementById('start-screen').classList.add('hidden');
+            document.getElementById('quiz-screen').classList.remove('hidden');
+
+            // Preparar y barajar preguntas y opciones
+            const shuffledRaw = shuffleArray(rawQuestions);
+            
+            processedQuestions = shuffledRaw.map((q, qIndex) => {
+                // Guardar cuál es la respuesta correcta original
+                const originalCorrectText = q.options[q.correct];
+                
+                // Barajar las 3 opciones
+                const shuffledOptions = shuffleArray(q.options);
+                
+                // Encontrar el nuevo índice de la opción correcta
+                const newCorrectIndex = shuffledOptions.indexOf(originalCorrectText);
+
+                return {
+                    id: qIndex,
+                    question: q.question,
+                    options: shuffledOptions,
+                    correct: newCorrectIndex,
+                    explanation: q.explanation
+                };
+            });
+
+            userAnswers = {};
+            renderQuestions();
+            updateProgress();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Renderizar Preguntas en el DOM
+        function renderQuestions() {
+            const container = document.getElementById('questions-container');
+            container.innerHTML = '';
+
+            const optionLabels = ['A', 'B', 'C'];
+
+            processedQuestions.forEach((q, index) => {
+                const qCard = document.createElement('div');
+                qCard.className = 'glass-panel p-6 rounded-2xl border border-slate-700/50 space-y-4';
+                qCard.id = `question-card-${index}`;
+
+                let optionsHTML = '';
+                q.options.forEach((opt, optIdx) => {
+                    optionsHTML += `
+                        <label onclick="selectOption(${index}, ${optIdx})" className="option-card flex items-start p-4 rounded-xl border border-slate-700/60 bg-slate-900/40 hover:bg-slate-800/80 hover:border-indigo-500/50 cursor-pointer transition group">
+                            <input type="radio" name="question-${index}" value="${optIdx}" class="hidden">
+                            <span id="opt-icon-${index}-${optIdx}" class="w-7 h-7 rounded-lg border border-slate-600 bg-slate-800 text-slate-400 flex items-center justify-center text-xs font-bold mr-3 mt-0.5 group-hover:border-indigo-400 group-hover:text-indigo-400 transition-colors shrink-0">
+                                ${optionLabels[optIdx]}
+                            </span>
+                            <span class="text-slate-200 text-sm leading-relaxed pt-0.5">${opt}</span>
+                        </label>
+                    `;
+                });
+
+                qCard.innerHTML = `
+                    <div class="flex items-start gap-3">
+                        <span class="bg-indigo-500/20 text-indigo-400 border border-indigo-500/30 text-xs font-bold px-2.5 py-1 rounded-lg shrink-0 mt-0.5">
+                            #${index + 1}
+                        </span>
+                        <h3 class="text-slate-100 font-semibold text-base sm:text-lg leading-snug">${q.question}</h3>
+                    </div>
+                    <div class="grid grid-cols-1 gap-3 pt-2">
+                        ${optionsHTML}
+                    </div>
+                `;
+
+                container.appendChild(qCard);
+            });
+        }
+
+        // Seleccionar Opción
+        function selectOption(questionIndex, optionIndex) {
+            userAnswers[questionIndex] = optionIndex;
+
+            // Actualizar interfaz visualmente
+            const optionLabels = ['A', 'B', 'C'];
+            for (let i = 0; i < 3; i++) {
+                const iconSpan = document.getElementById(`opt-icon-${questionIndex}-${i}`);
+                const parentLabel = iconSpan.closest('label');
+
+                if (i === optionIndex) {
+                    iconSpan.className = 'w-7 h-7 rounded-lg bg-indigo-600 text-white flex items-center justify-center text-xs font-bold mr-3 mt-0.5 shadow-md shadow-indigo-600/40 shrink-0';
+                    parentLabel.className = 'option-card flex items-start p-4 rounded-xl border-2 border-indigo-500 bg-indigo-950/30 cursor-pointer transition shadow-lg shadow-indigo-950/20';
+                } else {
+                    iconSpan.className = 'w-7 h-7 rounded-lg border border-slate-600 bg-slate-800 text-slate-400 flex items-center justify-center text-xs font-bold mr-3 mt-0.5 group-hover:border-indigo-400 group-hover:text-indigo-400 transition-colors shrink-0';
+                    parentLabel.className = 'option-card flex items-start p-4 rounded-xl border border-slate-700/60 bg-slate-900/40 hover:bg-slate-800/80 hover:border-indigo-500/50 cursor-pointer transition group';
+                }
+            }
+
+            updateProgress();
+        }
+
+        // Actualizar barra de progreso
+        function updateProgress() {
+            const total = processedQuestions.length;
+            const answered = Object.keys(userAnswers).length;
+            const percentage = Math.round((answered / total) * 100);
+
+            document.getElementById('progress-bar').style.width = `${percentage}%`;
+            document.getElementById('answered-count').textContent = `Respondiendo: ${answered}/${total}`;
+        }
+
+        // Finalizar y Corregir
+        function submitQuiz() {
+            const answeredCount = Object.keys(userAnswers).length;
+
+            if (answeredCount < processedQuestions.length) {
+                const confirmSubmit = confirm(`Has respondido ${answeredCount} de 20 preguntas. ¿Deseas entregar el test de todos modos? Las no respondidas contarán como fallos.`);
+                if (!confirmSubmit) return;
+            }
+
+            // Calcular nota
+            let correctCount = 0;
+            processedQuestions.forEach((q, idx) => {
+                if (userAnswers[idx] === q.correct) {
+                    correctCount++;
+                }
+            });
+
+            showResults(correctCount);
+        }
+
+        // Mostrar Resultados
+        function showResults(correctCount) {
+            document.getElementById('quiz-screen').classList.add('hidden');
+            document.getElementById('results-screen').classList.remove('hidden');
+
+            const total = processedQuestions.length;
+            const scoreTen = ((correctCount / total) * 10).toFixed(1);
+            const percentage = Math.round((correctCount / total) * 100);
+
+            // Datos del alumno
+            const studentInput = document.getElementById('student-name').value.trim();
+            document.getElementById('res-student-name').textContent = studentInput ? `Alumno/a: ${studentInput}` : 'Alumno/a: No especificado';
+            
+            const now = new Date();
+            document.getElementById('res-date').textContent = `Fecha de entrega: ${now.toLocaleDateString('es-ES')} - ${now.toLocaleTimeString('es-ES', {hour: '2-digit', minute:'2-digit'})}`;
+
+            // Métricas
+            document.getElementById('score-decimal').textContent = scoreTen;
+            document.getElementById('score-fraction').textContent = `${correctCount} / ${total}`;
+            document.getElementById('score-percentage').textContent = `${percentage}%`;
+
+            // Badge de nota y Feedback
+            const badge = document.getElementById('grade-badge');
+            const feedback = document.getElementById('teacher-feedback');
+
+            if (scoreTen >= 9.0) {
+                badge.className = 'px-6 py-3 rounded-2xl text-center border font-bold text-xl sm:text-2xl bg-emerald-500/20 text-emerald-400 border-emerald-500/40 shadow-lg shadow-emerald-500/10';
+                badge.innerHTML = `<span class="block text-xs uppercase tracking-wider text-emerald-300">Calificación</span>Sobresaliente (${scoreTen})`;
+                feedback.innerHTML = `<strong class="text-emerald-400">Excelente comprensión:</strong> El estudiante demuestra un dominio sobresaliente del debate sobre la formación universitaria en informática, distinguiendo con precisión los fundamentos teóricos de la praxis profesional.`;
+            } else if (scoreTen >= 7.0) {
+                badge.className = 'px-6 py-3 rounded-2xl text-center border font-bold text-xl sm:text-2xl bg-blue-500/20 text-blue-400 border-blue-500/40 shadow-lg shadow-blue-500/10';
+                badge.innerHTML = `<span class="block text-xs uppercase tracking-wider text-blue-300">Calificación</span>Notable (${scoreTen})`;
+                feedback.innerHTML = `<strong class="text-blue-400">Buen resultado:</strong> El alumno comprende de manera sólida los aspectos clave de la brecha entre la universidad y el mercado laboral informático.`;
+            } else if (scoreTen >= 5.0) {
+                badge.className = 'px-6 py-3 rounded-2xl text-center border font-bold text-xl sm:text-2xl bg-amber-500/20 text-amber-400 border-amber-500/40 shadow-lg shadow-amber-500/10';
+                badge.innerHTML = `<span class="block text-xs uppercase tracking-wider text-amber-300">Calificación</span>Aprobado (${scoreTen})`;
+                feedback.innerHTML = `<strong class="text-amber-400">Aprobado justo:</strong> Se aprecian conocimientos básicos sobre la temática, pero conviene revisar el desglose de fallos para asimilar mejor conceptos de la industria.`;
+            } else {
+                badge.className = 'px-6 py-3 rounded-2xl text-center border font-bold text-xl sm:text-2xl bg-rose-500/20 text-rose-400 border-rose-500/40 shadow-lg shadow-rose-500/10';
+                badge.innerHTML = `<span class="block text-xs uppercase tracking-wider text-rose-300">Calificación</span>Suspenso (${scoreTen})`;
+                feedback.innerHTML = `<strong class="text-rose-400">Necesita mejorar:</strong> El resultado sugiere poca asimilación de los dilemas planteados sobre la ingeniería de software y la realidad laboral. Se recomienda repasar la lectura.`;
+            }
+
+            renderReviewList();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Renderizar lista de revisión detallada
+        function renderReviewList() {
+            const container = document.getElementById('review-list');
+            container.innerHTML = '';
+
+            const optionLabels = ['A', 'B', 'C'];
+
+            processedQuestions.forEach((q, idx) => {
+                const userChoice = userAnswers[idx];
+                const isCorrect = userChoice === q.correct;
+
+                const item = document.createElement('div');
+                item.className = `p-5 rounded-2xl border ${isCorrect ? 'bg-emerald-950/10 border-emerald-500/30' : 'bg-rose-950/10 border-rose-500/30'} space-y-3`;
+
+                let optionsReviewHTML = '';
+                q.options.forEach((opt, optIdx) => {
+                    let optStyle = 'border-slate-800 bg-slate-900/50 text-slate-400';
+                    let badgeOpt = '';
+
+                    if (optIdx === q.correct) {
+                        optStyle = 'border-emerald-500/60 bg-emerald-950/40 text-emerald-200 font-medium';
+                        badgeOpt = '<span class="ml-auto text-xs font-bold text-emerald-400 bg-emerald-500/20 px-2 py-0.5 rounded border border-emerald-500/30"><i class="fa-solid fa-check mr-1"></i> Correcta</span>';
+                    } else if (optIdx === userChoice && !isCorrect) {
+                        optStyle = 'border-rose-500/60 bg-rose-950/40 text-rose-200 font-medium';
+                        badgeOpt = '<span class="ml-auto text-xs font-bold text-rose-400 bg-rose-500/20 px-2 py-0.5 rounded border border-rose-500/30"><i class="fa-solid fa-xmark mr-1"></i> Tu Respuesta</span>';
+                    }
+
+                    optionsReviewHTML += `
+                        <div class="flex items-center p-3 rounded-xl border ${optStyle} text-sm">
+                            <span class="w-6 h-6 rounded-md bg-slate-800 border border-slate-700 flex items-center justify-center text-xs font-bold mr-3 shrink-0">
+                                ${optionLabels[optIdx]}
+                            </span>
+                            <span>${opt}</span>
+                            ${badgeOpt}
+                        </div>
+                    `;
+                });
+
+                item.innerHTML = `
+                    <div class="flex items-start justify-between gap-3">
+                        <div class="flex items-center gap-2">
+                            <span class="w-6 h-6 rounded-full ${isCorrect ? 'bg-emerald-500' : 'bg-rose-500'} text-white text-xs font-bold flex items-center justify-center">
+                                ${idx + 1}
+                            </span>
+                            <h4 class="text-white font-semibold text-sm sm:text-base">${q.question}</h4>
+                        </div>
+                        <span class="text-xs font-bold px-2.5 py-1 rounded-full border ${isCorrect ? 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30' : 'bg-rose-500/20 text-rose-400 border-rose-500/30'} shrink-0">
+                            ${isCorrect ? 'Correcta' : 'Incorrecta'}
+                        </span>
+                    </div>
+
+                    <div class="grid grid-cols-1 gap-2 pt-1">
+                        ${optionsReviewHTML}
+                    </div>
+
+                    <div class="text-xs bg-slate-900/80 p-3 rounded-xl border border-slate-800 text-slate-300 mt-2">
+                        <strong class="text-indigo-400 block mb-0.5"><i class="fa-solid fa-lightbulb mr-1"></i> Explicación Didáctica:</strong>
+                        ${q.explanation}
+                    </div>
+                `;
+
+                container.appendChild(item);
+            });
+        }
+
+        // Alternar vista del desglose
+        function toggleReview() {
+            const reviewContainer = document.getElementById('review-container');
+            const reviewText = document.getElementById('toggle-review-text');
+
+            if (reviewContainer.classList.contains('hidden')) {
+                reviewContainer.classList.remove('hidden');
+                reviewText.textContent = 'Ocultar Desglose de Respuestas';
+                reviewContainer.scrollIntoView({ behavior: 'smooth' });
+            } else {
+                reviewContainer.classList.add('hidden');
+                reviewText.textContent = 'Ver Desglose de Respuestas';
+            }
+        }
+
+        // Reiniciar Cuestionario
+        function restartQuiz() {
+            document.getElementById('results-screen').classList.add('hidden');
+            document.getElementById('review-container').classList.add('hidden');
+            document.getElementById('start-screen').classList.remove('hidden');
+            document.getElementById('toggle-review-text').textContent = 'Ver Desglose de Respuestas';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
